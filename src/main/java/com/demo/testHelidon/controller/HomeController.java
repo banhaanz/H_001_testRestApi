@@ -1,10 +1,13 @@
 package com.demo.testHelidon.controller;
 
+import com.demo.testHelidon.model.HomeProperties;
 import com.demo.testHelidon.model.User;
+import com.demo.testHelidon.service.HomeMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
@@ -22,14 +25,24 @@ import java.util.Collections;
 @Tag(name = "Test Home service", description = "Get test data")
 public class HomeController {
     private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
+    @Inject
+    private HomeMessageService service;
+
+    @Inject
+    private HomeProperties homeProperties;
 
     @GET @Path("/helloWorld")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject helloWorld() {
         log.info("===== Enter helloWorld ====");
+        log.info("homeProperties value:{}", homeProperties);
 
         return JSON.createObjectBuilder()
                 .add("message1", "hello world")
+                .add("config value1", service.getMessage())
+                .add("config value2", homeProperties.getUsername())
+                .add("config value3", homeProperties.getAge())
+                .add("yaml value1", homeProperties.getYamlValue1())
                 .build();
     }
 

@@ -1,0 +1,3 @@
+app:
+  yaml:
+    value1: Hello from yaml

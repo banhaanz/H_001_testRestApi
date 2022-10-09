@@ -16,25 +16,14 @@ import java.util.Set;
         title = "Example application",
         version = "1.0.0",
         contact = @Contact(
-                name = "AEKCOM",
-                email = "aekcom@aekcom.com",
-                url = "http://www.aekcom.com")
+                name = "CODECOOLZ",
+                email = "codeCoolz@codeCoolz.com",
+                url = "http://www.codeCoolz.com")
 ),
         servers = {
                 @Server(url = "/",description = "localhost")
         }
 )
-@ApplicationPath("/AEKCOM")
+@ApplicationPath("/CODECOOLZ")
 @ApplicationScoped
-public class ApplicationPathConfig extends Application {
-//    @Override
-//    public Set<Class<?>> getClasses() {
-//
-//        Set<Class<?>> classes = new HashSet<>();
-//
-//        // resources
-//        classes.add(HomeController.class);
-//
-//        return classes;
-//    }
-}
+public class ApplicationPathConfig extends Application { }
