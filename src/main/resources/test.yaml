@@ -2,6 +2,8 @@ test:
   value: value1
 
 config:
+  id: aaaaaaa
   user:
     name: name1
     age: 25
+    work: 26444

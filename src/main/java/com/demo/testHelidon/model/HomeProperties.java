@@ -38,4 +38,6 @@ public class HomeProperties {
 
     @Inject @ConfigProperty(name = "config.user.name")
     private String yamlConfigValue1;
+//    @Inject @ConfigProperty(name = "config.user.work")
+    private int yamlConfigValue2;
 }

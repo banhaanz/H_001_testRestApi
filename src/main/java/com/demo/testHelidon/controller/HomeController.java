@@ -42,6 +42,7 @@ public class HomeController {
                 .add("dbValue1", service.getHomeProperties().getDbValue1())
                 .add("connectorValue1", service.getHomeProperties().getConnectorValue1())
                 .add("yamlConfigValue1", service.getHomeProperties().getYamlConfigValue1())
+                .add("yamlConfigValue2", service.getHomeProperties().getYamlConfigValue2())
                 .add("yaml value1", homeProperties.getYamlValue1())
                 .build();
     }

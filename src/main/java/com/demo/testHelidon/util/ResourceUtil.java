@@ -1,8 +1,10 @@
 package com.demo.testHelidon.util;
 
 import org.yaml.snakeyaml.Yaml;
+
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class ResourceUtil
@@ -23,6 +25,7 @@ public class ResourceUtil
         Map<String, Object> yamlMaps = yaml.load(ResourceUtil.class.getResourceAsStream("/" + yamlFileName));
         List<Map<String, Object>> keyList = checkIsHasValueAsMap(yamlMaps, null);
         keyList.forEach(p::putAll);
+        System.out.println(p);
         return p;
     }
 
@@ -45,40 +48,30 @@ public class ResourceUtil
         } else {
             List<Map<String, Object>> toRemove = new ArrayList<>();
             List<Map<String, Object>> toUpdate = new ArrayList<>();
-            List<Map<String, Object>> toRedo = new ArrayList<>();
+            AtomicBoolean isReCheckAgain = new AtomicBoolean(false);
 
             keyList.forEach(el -> el.forEach((k, v) -> {
                 if (v instanceof Map){
                     toRemove.add(el);
                     Map<String, Object> tempMaps1 = (Map<String, Object>) v;
-                    Map<String, Object> tempMaps2 = new HashMap<>();
-                    if(tempMaps1.size() == 1){
-                        tempMaps1.forEach((k1, v1) -> {
-                            tempMaps2.put(k + "." + k1, v1);
-                            toUpdate.add(tempMaps2);
-                        });
-                    }else {
-                        tempMaps1.forEach((k2, v2) -> {
-                            Map<String, Object> tempMaps3 = new HashMap<>();
-                            tempMaps3.put(k + "." + k2, v2);
-                            toUpdate.add(tempMaps3);
-                        });
-                    }
+                    tempMaps1.forEach((k1, v1) -> {
+                        Map<String, Object> tempMaps2 = new HashMap<>();
+                        tempMaps2.put(k + "." + k1, v1);
+                        toUpdate.add(tempMaps2);
+                    });
                 }
             }));
 
             keyList.removeAll(toRemove);
             keyList.addAll(toUpdate);
 
-            keyList.forEach(el -> {
-                for(Map.Entry entry : el.entrySet()){
-                    if (entry.getValue() != null && entry.getValue() instanceof Map){
-                        toRedo.add(el);
-                    }
+            keyList.forEach(el -> el.forEach((k, v) -> {
+                if (v instanceof Map){
+                    isReCheckAgain.set(true);
                 }
-            });
+            }));
 
-            if(!toRedo.isEmpty()){
+            if(isReCheckAgain.get()){
                 checkIsHasValueAsMap(null, keyList);
             }
         }
