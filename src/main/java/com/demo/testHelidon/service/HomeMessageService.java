@@ -2,17 +2,20 @@ package com.demo.testHelidon.service;
 
 import com.demo.testHelidon.model.HomeProperties;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.util.concurrent.atomic.AtomicReference;
 
-@ApplicationScoped //--1
+@RequestScoped //--1
 public class HomeMessageService {
     private final AtomicReference<String> message = new AtomicReference<>(); //--2
 
+    private final HomeProperties homeProperties;
+
     @Inject
     public HomeMessageService(HomeProperties homeProperties) {
-        this.message.set(homeProperties.getMessage());
+        this.homeProperties = homeProperties;
+        this.message.set(this.homeProperties.getMessage());
     }
 
     public String getMessage(){
@@ -21,6 +24,10 @@ public class HomeMessageService {
 
     public void setMessage(String message){
         this.message.set(message);
+    }
+
+    public HomeProperties getHomeProperties(){
+        return this.homeProperties;
     }
 
 }

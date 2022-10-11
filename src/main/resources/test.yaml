@@ -1,0 +1,7 @@
+test:
+  value: value1
+
+config:
+  user:
+    name: name1
+    age: 25
