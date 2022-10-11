@@ -5,7 +5,7 @@ import org.eclipse.microprofile.config.spi.ConfigSource;
 
 import java.util.List;
 
-public class BasicConfigSourceProvider implements org.eclipse.microprofile.config.spi.ConfigSourceProvider {
+public class PropertiesConfigSourceProvider implements org.eclipse.microprofile.config.spi.ConfigSourceProvider {
         @SneakyThrows
         @Override
         public List<ConfigSource> getConfigSources(ClassLoader forClassLoader) {

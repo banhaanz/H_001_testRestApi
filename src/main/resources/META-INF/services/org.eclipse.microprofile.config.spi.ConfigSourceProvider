@@ -1,2 +1,2 @@
-com.demo.testHelidon.config.configSource.BasicConfigSourceProvider
+com.demo.testHelidon.config.configSource.PropertiesConfigSourceProvider
 com.demo.testHelidon.config.configSource.YamlConfigSourceProvider
