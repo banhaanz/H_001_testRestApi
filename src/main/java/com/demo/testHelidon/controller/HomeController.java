@@ -2,9 +2,11 @@ package com.demo.testHelidon.controller;
 
 import com.demo.testHelidon.model.HomeProperties;
 import com.demo.testHelidon.model.User;
+import com.demo.testHelidon.service.ApplicationService;
 import com.demo.testHelidon.service.HomeMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.glassfish.json.JsonUtil;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -12,6 +14,8 @@ import javax.json.Json;
 import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
@@ -28,11 +32,13 @@ public class HomeController {
     @Inject
     private HomeProperties homeProperties;
 
+    @Inject
+    private ApplicationService applicationService;
+
     @GET @Path("/helloWorld")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject helloWorld() {
         log.info("===== Enter helloWorld ====");
-//        log.info("homeProperties value:{}", homeProperties);
 
         return JSON.createObjectBuilder()
                 .add("message1", "hello world")
@@ -56,13 +62,27 @@ public class HomeController {
                 .build();
     }
 
+    @GET @Path("/getDatabase")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDatabase(@Context HttpHeaders headers) {
+        log.info("===== Enter getDatabase ====");
+//        headers.getRequestHeaders().forEach((k,v) -> log.info("headers : {} , {}", k, v));
+
+        return this.setResponse(applicationService.getAllApplicationType());
+    }
+
     @POST @Path("/testPost")
     @Produces(MediaType.APPLICATION_JSON)
     public Response testPost() {
         log.info("===== Enter testPost ====");
+        return this.setResponse(new User("CODECOOLZ", 20, true));
+    }
+
+    private <T> Response setResponse(T body){
         return Response
                 .status(Response.Status.OK)
-                .entity(new User("CODECOOLZ", 20, true))
+                .header("verification","approved") //set some response header
+                .entity(body)
                 .build();
     }
 }
